@@ -1,1 +1,77 @@
 
+import streamlit as st
+
+def generate_arithmetic_sequence(first_term, common_difference, num_terms):
+    """Generate an arithmetic sequence."""
+    sequence = []
+    for i in range(num_terms):
+        term = first_term + (i * common_difference)
+        sequence.append(term)
+    return sequence
+
+def generate_geometric_sequence(first_term, common_ratio, num_terms):
+    """Generate a geometric sequence."""
+    sequence = []
+    for i in range(num_terms):
+        term = first_term * (common_ratio ** i)
+        sequence.append(term)
+    return sequence
+
+def calculate_geometric_sum(first_term, common_ratio, num_terms):
+    """Calculate the sum of a geometric series."""
+    if common_ratio == 1:
+        return first_term * num_terms
+    else:
+        return first_term * (1 - common_ratio**num_terms) / (1 - common_ratio)
+
+st.title("Sequence Generator")
+st.write("Generate arithmetic or geometric sequences with their properties.")
+
+# Sequence type selection
+sequence_type = st.selectbox("Choose Sequence Type:", ["Arithmetic Sequence", "Geometric Sequence"])
+
+if sequence_type == "Arithmetic Sequence":
+    st.subheader("Arithmetic Sequence")
+    st.write("Generate arithmetic sequences by providing the first term, common difference, and number of terms.")
+    
+    # Input fields for arithmetic sequence
+    first_term = st.number_input("First Term", value=1.0)
+    common_difference = st.number_input("Common Difference", value=1.0)
+    num_terms = st.number_input("Number of Terms", min_value=1, value=10, step=1)
+    
+    # Generate and display arithmetic sequence
+    if st.button("Generate Arithmetic Sequence"):
+        sequence = generate_arithmetic_sequence(first_term, common_difference, int(num_terms))
+        
+        st.write("Generated Arithmetic Sequence:")
+        st.write(sequence)
+        
+        # Display as formatted string
+        sequence_str = ", ".join([str(term) for term in sequence])
+        st.code(sequence_str)
+
+elif sequence_type == "Geometric Sequence":
+    st.subheader("Geometric Sequence")
+    st.write("Generate geometric sequences by providing the first term, common ratio, and number of terms.")
+    
+    # Input fields for geometric sequence
+    first_term = st.number_input("First Term", value=1.0)
+    common_ratio = st.number_input("Common Ratio", value=2.0)
+    num_terms = st.number_input("Number of Terms", min_value=1, value=10, step=1)
+    
+    # Generate and display geometric sequence
+    if st.button("Generate Geometric Sequence"):
+        sequence = generate_geometric_sequence(first_term, common_ratio, int(num_terms))
+        geometric_sum = calculate_geometric_sum(first_term, common_ratio, int(num_terms))
+        
+        st.write("Generated Geometric Sequence:")
+        st.write(sequence)
+        
+        # Display as formatted string
+        sequence_str = ", ".join([str(term) for term in sequence])
+        st.code(sequence_str)
+        
+        # Display the sum of the geometric series
+        st.write(f"**Sum of the Geometric Series:** {geometric_sum}")
+
+st.markdown("*Made by Myles*")
